@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Connection;
 
@@ -32,10 +33,10 @@ final class Command
         }
 
         foreach ($parameters as $value) {
-            if (!$value instanceof DateTimeInterface
-                && !$value instanceof Decimal
-                && !is_scalar($value)
-                && null !== $value
+            if (! $value instanceof DateTimeInterface
+                && ! $value instanceof Decimal
+                && ! is_scalar($value)
+                && $value !== null
             ) {
                 throw DomainException::fromInvalidValue($value);
             }
@@ -44,7 +45,7 @@ final class Command
         $this->parameters = ['-lay' => $layout] + $parameters;
     }
 
-    public function withIdentity(Identity $identity) : self
+    public function withIdentity(Identity $identity): self
     {
         $command = clone $this;
         $command->identity = $identity;
@@ -54,21 +55,22 @@ final class Command
 
     public function hasIdentity()
     {
-        return null !== $this->identity;
+        return $this->identity !== null;
     }
 
-    public function getIdentity() : Identity
+    public function getIdentity(): Identity
     {
         Assertion::notNull($this->identity);
+
         return $this->identity;
     }
 
-    public function getLayout() : string
+    public function getLayout(): string
     {
         return $this->parameters['-lay'];
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         $parts = [];
 
@@ -81,8 +83,9 @@ final class Command
                 $value = (string) $value;
             }
 
-            if (null === $value || '' === $value) {
+            if ($value === null || $value === '') {
                 $parts[] = urlencode((string) $name);
+
                 continue;
             }
 

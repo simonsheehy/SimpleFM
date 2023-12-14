@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\Exception;
 
@@ -74,7 +75,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         216 => 'Guest account cannot be duplicated',
         217 => (
             'User does not have sufficient privileges to modify administrator accountUser does not have sufficient'
-            . 'privileges to modify administrator account'
+            .'privileges to modify administrator account'
         ),
         218 => 'Password and verify password do not match (iPhone)',
         300 => 'File is locked or in use',
@@ -144,7 +145,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         729 => 'Errors occurred during import. Records could not be imported',
         730 => (
             'Unsupported Excel version. (Convert file to Excel 7.0 (Excel 95), Excel 97, 2000, or XP format and try'
-            . ' again)'
+            .' again)'
         ),
         731 => 'The file you are importing from contains no data',
         732 => 'This file cannot be inserted because it contains other files',
@@ -155,7 +156,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         737 => 'Bento table is reported as missed when trying to import it',
         738 => (
             'A theme named \1770 already exists in \1771. Do you want to replace it with the theme that you are'
-            . ' importing?'
+            .' importing?'
         ),
         800 => 'Unable to create file on disk',
         801 => 'Unable to create temporary file on System disk',
@@ -220,7 +221,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         1213 => 'This variable has already been defined in the Let function',
         1214 => (
             'AVERAGE, COUNT, EXTEND, GETREPETITION, MAX, MIN, NPV, STDEV, SUM and GETSUMMARY: expression found where a'
-            . ' field alone is needed'
+            .' field alone is needed'
         ),
         1215 => 'This parameter is an invalid Get function parameter',
         1216 => 'Only Summary fields allowed as first argument in GETSUMMARY',
@@ -266,7 +267,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         1632 => 'The certificate has expired. (previously, The Certificate cannot be authenticated by a supported CA)',
         1633 => (
             'The certificate is self-signed. (previously, The Certificate is valid, but still wrong. e.g. hostname'
-            . ' doesn\'t match, or expired)'
+            .' doesn\'t match, or expired)'
         ),
         1634 => 'A certificate verification error occurred.',
         2021 => 'plug-ins configuration disallowed',
@@ -277,7 +278,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         3000 => 'Action never occurred because script was triggered',
         3001 => (
             'Set when a step returns but is not really finished (probably due to having to switch threads and keep'
-            . ' engine thread running)'
+            .' engine thread running)'
         ),
         3002 => (
             'The external file can not be deleted from disk. Do you want to delete the reference to the file anyway?'
@@ -296,7 +297,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         3428 => 'When a panel is deleted, all the objects on that panel will be deleted',
         3429 => (
             'One or more of the panels you\'ve selected contain locked objects. Do you you want to delete those'
-            . ' panel(s) even though they contain locked object(s)?'
+            .' panel(s) even though they contain locked object(s)?'
         ),
         3956 => 'The total size of all base directory paths cannot exceed ^1 bytes.',
         3958 => 'Please select at least one bar code type',
@@ -324,7 +325,7 @@ final class FileMakerException extends RuntimeException implements ExceptionInte
         20650 => 'Page doesn\'t have enough footer size for encryption',
     ];
 
-    public static function fromErrorCode(int $errorCode) : self
+    public static function fromErrorCode(int $errorCode): self
     {
         if (array_key_exists($errorCode, self::$errorReasons)) {
             $reason = self::$errorReasons[$errorCode];

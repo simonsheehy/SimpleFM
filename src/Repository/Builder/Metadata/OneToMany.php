@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -44,27 +45,27 @@ final class OneToMany
         $this->eagerHydration = $eagerHydration;
     }
 
-    public function getPropertyName() : string
+    public function getPropertyName(): string
     {
         return $this->propertyName;
     }
 
-    public function getTargetTable() : string
+    public function getTargetTable(): string
     {
         return $this->targetTable;
     }
 
-    public function getTargetEntity() : string
+    public function getTargetEntity(): string
     {
         return $this->targetEntity;
     }
 
-    public function getTargetFieldName() : string
+    public function getTargetFieldName(): string
     {
         return $this->targetFieldName;
     }
 
-    public function hasEagerHydration() : bool
+    public function hasEagerHydration(): bool
     {
         return $this->eagerHydration;
     }

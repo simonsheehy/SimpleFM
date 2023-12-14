@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Connection;
 
@@ -59,7 +60,7 @@ final class CommandTest extends TestCase
         $command->getIdentity();
     }
 
-    public function parameterProvider() : array
+    public function parameterProvider(): array
     {
         return [
             'no-parameters' => [

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -60,8 +61,8 @@ final class Entity
         array $oneToMany,
         array $manyToOne,
         array $oneToOne,
-        RecordId $recordId = null,
-        string $interfaceName = null
+        ?RecordId $recordId = null,
+        ?string $interfaceName = null
     ) {
         $this->validateArray($fields, Field::class);
         $this->validateArray($embeddables, Embeddable::class);
@@ -80,31 +81,32 @@ final class Entity
         $this->interfaceName = $interfaceName;
     }
 
-    public function getLayout() : string
+    public function getLayout(): string
     {
         return $this->layout;
     }
 
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->className;
     }
 
-    public function hasInterfaceName() : bool
+    public function hasInterfaceName(): bool
     {
-        return null !== $this->interfaceName;
+        return $this->interfaceName !== null;
     }
 
-    public function getInterfaceName() : string
+    public function getInterfaceName(): string
     {
         Assertion::notNull($this->interfaceName);
+
         return $this->interfaceName;
     }
 
     /**
      * @return Field[]
      */
-    public function getFields() : array
+    public function getFields(): array
     {
         return $this->fields;
     }
@@ -112,7 +114,7 @@ final class Entity
     /**
      * @return Embeddable[]
      */
-    public function getEmbeddables() : array
+    public function getEmbeddables(): array
     {
         return $this->embeddables;
     }
@@ -120,7 +122,7 @@ final class Entity
     /**
      * @return OneToMany[]
      */
-    public function getOneToMany() : array
+    public function getOneToMany(): array
     {
         return $this->oneToMany;
     }
@@ -128,7 +130,7 @@ final class Entity
     /**
      * @return ManyToOne[]
      */
-    public function getManyToOne() : array
+    public function getManyToOne(): array
     {
         return $this->manyToOne;
     }
@@ -136,26 +138,27 @@ final class Entity
     /**
      * @return OneToOne[]
      */
-    public function getOneToOne() : array
+    public function getOneToOne(): array
     {
         return $this->oneToOne;
     }
 
-    public function hasRecordId() : bool
+    public function hasRecordId(): bool
     {
-        return null !== $this->recordId;
+        return $this->recordId !== null;
     }
 
-    public function getRecordId() : RecordId
+    public function getRecordId(): RecordId
     {
         Assertion::notNull($this->recordId);
+
         return $this->recordId;
     }
 
     private function validateArray(array $array, string $expectedClassName)
     {
-        Assertion::count(array_filter($array, function ($metadata) use ($expectedClassName) : bool {
-            return !$metadata instanceof $expectedClassName;
+        Assertion::count(array_filter($array, function ($metadata) use ($expectedClassName): bool {
+            return ! $metadata instanceof $expectedClassName;
         }), 0, sprintf('At least one element in array is not an instance of %s', $expectedClassName));
     }
 }

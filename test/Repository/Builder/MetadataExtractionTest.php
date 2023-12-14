@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository\Builder;
 
@@ -41,7 +42,7 @@ final class MetadataExtractionTest extends TestCase
             private $baz = 'bat';
         };
 
-        $proxyEntity = new class($entity, 1) implements ProxyInterface, EmptyEntityInterface
+        $proxyEntity = new class($entity, 1) implements EmptyEntityInterface, ProxyInterface
         {
             private $entity;
 
@@ -423,7 +424,7 @@ final class MetadataExtractionTest extends TestCase
         $this->assertSame([], $extraction->extract($entity));
     }
 
-    private function createMockProxy($entity, $relationId) : ProxyInterface
+    private function createMockProxy($entity, $relationId): ProxyInterface
     {
         return new class($entity, $relationId) implements ProxyInterface
         {

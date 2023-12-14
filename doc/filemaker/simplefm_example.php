@@ -2,7 +2,6 @@
 /**
  * This source file is subject to the MIT license that is bundled with this package in the file LICENSE.txt.
  *
- * @package   SimpleFM
  * @copyright Copyright (c) 2007-2016 Soliant Consulting, Inc. (http://www.soliantconsulting.com)
  * @author    jsmall@soliantconsulting.com
  *
@@ -19,14 +18,13 @@
  *  The last command starts the internal PHP web server. Now when you visit the browser you should see the SimpleFM
  *  Example page displayed in your browser.
  */
-
 ini_set('display_errors', 1);
 ini_set('log_errors', 1);
-$errorLogPath = dirname(__FILE__) . '/error.log';
+$errorLogPath = dirname(__FILE__).'/error.log';
 ini_set('error_log', $errorLogPath);
 error_reporting(E_ALL);
 
-require_once(__DIR__ . '/vendor/autoload.php');
+require_once __DIR__.'/vendor/autoload.php';
 
 use Http\Client\Curl\Client;
 use Monolog\Handler\StreamHandler;
@@ -64,7 +62,7 @@ $identityHandler = null;
  * connection.log to the same directory as this simplefm_example.php file using Monolog\Logger.
  */
 $logger = new Logger('connection');
-$connectionLogPath = dirname(__FILE__) . '/connection.log';
+$connectionLogPath = dirname(__FILE__).'/connection.log';
 $logger->pushHandler(new StreamHandler($connectionLogPath));
 
 /**
@@ -108,7 +106,7 @@ $records = $resultSetClient->execute($command);
  *
  * See the Best Practices section of the included README.md for more information.
  */
-echo "<h1>SimpleFM Example</h1>";
+echo '<h1>SimpleFM Example</h1>';
 
 /**
  * Basic info about the response
@@ -136,37 +134,37 @@ echo sprintf("<div style='background-color:EEF;padding:1em;margin:1em;border-sty
 /**
  * Records formatted like a FileMaker Table View
  */
-echo "<h2>Table View</h2><table border=1><tr><th>array key</th>";
+echo '<h2>Table View</h2><table border=1><tr><th>array key</th>';
 foreach ($records->first() as $key => $value) {
     echo "<th>$key</th>";
 }
-echo "</tr>";
+echo '</tr>';
 foreach ($records as $key => $data) {
     echo "<tr><td>$key</td>";
     foreach ($data as $value) {
-        echo sprintf("<td>%s</td>", stringifyValue($value));
+        echo sprintf('<td>%s</td>', stringifyValue($value));
     }
-    echo "</tr>";
+    echo '</tr>';
 }
-echo "</table>";
+echo '</table>';
 
 /**
  * Format the result rows like a FileMaker Form in List View
  */
-echo "<h2>Form List View</h2>";
+echo '<h2>Form List View</h2>';
 foreach ($records as $i => $data) {
-    echo "<table border=1>";
+    echo '<table border=1>';
     echo "<tr><th>array key</th><td>$i</td></tr>";
     foreach ($data as $key => $value) {
-        echo sprintf("<tr><th>%s</th><td>%s</td></tr>", $key, stringifyValue($value));
+        echo sprintf('<tr><th>%s</th><td>%s</td></tr>', $key, stringifyValue($value));
     }
-    echo "</table><br/>";
+    echo '</table><br/>';
 }
 
 /**
  * Finally, a dump of the raw result
  */
-echo "<hr><pre>";
+echo '<hr><pre>';
 foreach ($records as $record) {
     var_dump($record);
 }
@@ -175,9 +173,9 @@ foreach ($records as $record) {
  * IMPORTANT NOTE: The formatting code below is only designed to format html output for the above examples. This is
  * not a suggestion for best practices.
  */
-function stringifyValue($value) : string
+function stringifyValue($value): string
 {
-    $value = $value === "" ? "&nbsp;" : $value;
+    $value = $value === '' ? '&nbsp;' : $value;
     if (is_array($value)) {
         $value = arrayToParagraphs($value);
     } elseif ($value instanceof DateTimeInterface) {
@@ -185,6 +183,7 @@ function stringifyValue($value) : string
     } else {
         $value = nl2br($value);
     }
+
     return $value;
 }
 
@@ -201,7 +200,7 @@ function arrayToParagraphs($value)
                     if (is_array($v)) {
                         continue;
                     }
-                    $tempValue .= $k . ':&nbsp;' . stringifyValue($v) . PHP_EOL;
+                    $tempValue .= $k.':&nbsp;'.stringifyValue($v).PHP_EOL;
                 }
                 $tempValue .= PHP_EOL;
             }
@@ -211,7 +210,8 @@ function arrayToParagraphs($value)
             $collapsedValue .= implode(PHP_EOL, $value);
         }
     } else {
-        return "&nbsp;";
+        return '&nbsp;';
     }
+
     return sprintf('<a href="#" title="%s">%d items</a>', $collapsedValue, $count);
 }

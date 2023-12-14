@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder;
 
@@ -41,7 +42,7 @@ final class RepositoryBuilder implements RepositoryBuilderInterface
         $this->proxyBuilder = $proxyBuilder;
     }
 
-    public function buildRepository(string $entityClassName) : RepositoryInterface
+    public function buildRepository(string $entityClassName): RepositoryInterface
     {
         if (array_key_exists($entityClassName, $this->repositories)) {
             return $this->repositories[$entityClassName];
@@ -49,11 +50,11 @@ final class RepositoryBuilder implements RepositoryBuilderInterface
 
         $metadata = $this->metadataBuilder->getMetadata($entityClassName);
 
-        return ($this->repositories[$entityClassName] = new Repository(
+        return $this->repositories[$entityClassName] = new Repository(
             $this->resultSetClient,
             $metadata->getLayout(),
             new MetadataHydration($this, $this->proxyBuilder, $metadata),
             new MetadataExtraction($metadata)
-        ));
+        );
     }
 }

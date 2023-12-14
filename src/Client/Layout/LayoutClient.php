@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\Layout;
 
@@ -22,7 +23,7 @@ final class LayoutClient implements LayoutClientInterface
         $this->connection = $connection;
     }
 
-    public function execute(Command $command) : Layout
+    public function execute(Command $command): Layout
     {
         $xml = $this->connection->execute($command, self::GRAMMAR_PATH);
         $errorCode = (int) $xml->ERRORCODE;
@@ -38,7 +39,7 @@ final class LayoutClient implements LayoutClientInterface
         );
     }
 
-    private function parseValueLists(SimpleXMLElement $xml) : array
+    private function parseValueLists(SimpleXMLElement $xml): array
     {
         $valueLists = [];
 
@@ -55,7 +56,7 @@ final class LayoutClient implements LayoutClientInterface
         return $valueLists;
     }
 
-    private function parseFields(SimpleXMLElement $xml, array $valueLists) : array
+    private function parseFields(SimpleXMLElement $xml, array $valueLists): array
     {
         $fields = [];
 
@@ -65,7 +66,7 @@ final class LayoutClient implements LayoutClientInterface
             $fields[] = new Field(
                 (string) $field['NAME'],
                 (string) $field->STYLE['TYPE'],
-                ('' !== $valueListName ? $valueLists[$valueListName] : null)
+                ($valueListName !== '' ? $valueLists[$valueListName] : null)
             );
         }
 

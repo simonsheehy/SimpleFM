@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Authentication;
 
@@ -76,17 +77,17 @@ final class AuthenticationTest extends TestCase
         $authenticator->authenticate('foo', 'bar')->getIdentity();
     }
 
-    private function createResultSetClientProphecy() : ObjectProphecy
+    private function createResultSetClientProphecy(): ObjectProphecy
     {
         $resultSetClient = $this->prophesize(ResultSetClientInterface::class);
-        $resultSetClient->quoteString(\Prophecy\Argument::any())->will(function (array $parameters) : string {
+        $resultSetClient->quoteString(\Prophecy\Argument::any())->will(function (array $parameters): string {
             return $parameters[0];
         });
 
         return $resultSetClient;
     }
 
-    private function createAuthenticator(ResultSetClientInterface $resultSetClient, Identity $identity) : Authenticator
+    private function createAuthenticator(ResultSetClientInterface $resultSetClient, Identity $identity): Authenticator
     {
         $identityHandler = $this->prophesize(IdentityHandlerInterface::class);
         $identityHandler->createIdentity('foo', 'bar')->willReturn($identity);
@@ -99,8 +100,8 @@ final class AuthenticationTest extends TestCase
         );
     }
 
-    private function createCommand(string $username) : Command
+    private function createCommand(string $username): Command
     {
-        return new Command('layout', ['account' => '==' . $username, '-find' => null]);
+        return new Command('layout', ['account' => '=='.$username, '-find' => null]);
     }
 }

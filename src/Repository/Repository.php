@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository;
 
@@ -64,7 +65,7 @@ final class Repository implements RepositoryInterface
         $this->managedEntities = new SplObjectStorage();
     }
 
-    public function withIdentity(Identity $identity) : RepositoryInterface
+    public function withIdentity(Identity $identity): RepositoryInterface
     {
         $repository = clone $this;
         $repository->identity = $identity;
@@ -105,7 +106,7 @@ final class Repository implements RepositoryInterface
         return $this->createEntity($resultSet->first());
     }
 
-    public function findAll(array $sort = [], int $limit = null, int $offset = null) : CollectionInterface
+    public function findAll(array $sort = [], ?int $limit = null, ?int $offset = null): CollectionInterface
     {
         $resultSet = $this->execute(new Command(
             $this->layout,
@@ -122,10 +123,10 @@ final class Repository implements RepositoryInterface
     public function findBy(
         array $search,
         array $sort = [],
-        int $limit = null,
-        int $offset = null,
+        ?int $limit = null,
+        ?int $offset = null,
         bool $autoQuoteSearch = true
-    ) : CollectionInterface {
+    ): CollectionInterface {
         $resultSet = $this->execute(new Command(
             $this->layout,
             (
@@ -142,9 +143,9 @@ final class Repository implements RepositoryInterface
     public function findByQuery(
         FindQuery $findQuery,
         array $sort = [],
-        int $limit = null,
-        int $offset = null
-    ) : CollectionInterface {
+        ?int $limit = null,
+        ?int $offset = null
+    ): CollectionInterface {
         $resultSet = $this->execute(new Command(
             $this->layout,
             (
@@ -169,13 +170,13 @@ final class Repository implements RepositoryInterface
             $entity = $entity->__getRealEntity();
         }
 
-        if (!isset($this->managedEntities[$entity])) {
+        if (! isset($this->managedEntities[$entity])) {
             throw DomainException::fromUnmanagedEntity($entity);
         }
 
         $parameters = ['-recid' => $this->managedEntities[$entity]['record-id']];
 
-        if (!$force) {
+        if (! $force) {
             $parameters['-modid'] = $this->managedEntities[$entity]['mod-id'];
         }
 
@@ -188,13 +189,13 @@ final class Repository implements RepositoryInterface
             $entity = $entity->__getRealEntity();
         }
 
-        if (!isset($this->managedEntities[$entity])) {
+        if (! isset($this->managedEntities[$entity])) {
             throw DomainException::fromUnmanagedEntity($entity);
         }
 
         $parameters = ['-recid' => $this->managedEntities[$entity]['record-id'], '-delete' => null];
 
-        if (!$force) {
+        if (! $force) {
             $parameters['-modid'] = $this->managedEntities[$entity]['mod-id'];
         }
 
@@ -202,7 +203,7 @@ final class Repository implements RepositoryInterface
         unset($this->managedEntities[$entity]);
     }
 
-    public function quoteString(string $string) : string
+    public function quoteString(string $string): string
     {
         return $this->resultSetClient->quoteString($string);
     }
@@ -216,6 +217,7 @@ final class Repository implements RepositoryInterface
         }
 
         $this->addOrUpdateManagedEntity($record['record-id'], $record['mod-id'], $entity);
+
         return $entity;
     }
 
@@ -245,7 +247,7 @@ final class Repository implements RepositoryInterface
         $this->entitiesByRecordId[$recordId] = $entity;
     }
 
-    private function createCollection(CollectionInterface $resultSet) : CollectionInterface
+    private function createCollection(CollectionInterface $resultSet): CollectionInterface
     {
         $entities = [];
 
@@ -256,7 +258,7 @@ final class Repository implements RepositoryInterface
         return new ItemCollection($entities, $resultSet->getTotalCount());
     }
 
-    private function createSearchParameters(array $search, bool $autoQuoteSearch) : array
+    private function createSearchParameters(array $search, bool $autoQuoteSearch): array
     {
         $searchParameters = [];
 
@@ -267,7 +269,7 @@ final class Repository implements RepositoryInterface
         return $searchParameters;
     }
 
-    private function createSortParameters(array $sort) : array
+    private function createSortParameters(array $sort): array
     {
         if (count($sort) > 9) {
             throw DomainException::fromTooManySortParameters(9, $sort);
@@ -277,32 +279,32 @@ final class Repository implements RepositoryInterface
         $parameters = [];
 
         foreach ($sort as $field => $order) {
-            $parameters['-sortfield.' . $index] = $field;
-            $parameters['-sortorder.' . $index] = $order;
-            ++$index;
+            $parameters['-sortfield.'.$index] = $field;
+            $parameters['-sortorder.'.$index] = $order;
+            $index++;
         }
 
         return $parameters;
     }
 
-    private function createLimitAndOffsetParameters(int $limit = null, int $offset = null) : array
+    private function createLimitAndOffsetParameters(?int $limit = null, ?int $offset = null): array
     {
         $parameters = [];
 
-        if (null !== $limit) {
+        if ($limit !== null) {
             $parameters['-max'] = $limit;
         }
 
-        if (null !== $offset) {
+        if ($offset !== null) {
             $parameters['-skip'] = $offset;
         }
 
         return $parameters;
     }
 
-    private function execute(Command $command) : CollectionInterface
+    private function execute(Command $command): CollectionInterface
     {
-        if (null !== $this->identity) {
+        if ($this->identity !== null) {
             $command = $command->withIdentity($this->identity);
         }
 

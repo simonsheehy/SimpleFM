@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Type;
 
@@ -10,12 +11,12 @@ final class BooleanType implements TypeInterface
 {
     public function fromFileMakerValue($value)
     {
-        if (null === $value) {
+        if ($value === null) {
             return false;
         }
 
         if ($value instanceof Decimal) {
-            return 0 !== $value->comp(Decimal::fromInteger(0));
+            return $value->comp(Decimal::fromInteger(0)) !== 0;
         }
 
         if (is_string($value)) {
@@ -28,6 +29,7 @@ final class BooleanType implements TypeInterface
     public function toFileMakerValue($value)
     {
         Assertion::boolean($value);
+
         return Decimal::fromInteger($value ? 1 : 0);
     }
 }

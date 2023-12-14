@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Collection;
 
@@ -7,7 +8,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
 
-final class ItemCollection implements IteratorAggregate, CollectionInterface
+final class ItemCollection implements CollectionInterface, IteratorAggregate
 {
     /**
      * @var ArrayIterator
@@ -25,19 +26,19 @@ final class ItemCollection implements IteratorAggregate, CollectionInterface
         $this->totalCount = $totalCount;
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->items);
     }
 
-    public function getTotalCount() : int
+    public function getTotalCount(): int
     {
         return $this->totalCount;
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
-        return 0 === count($this->items);
+        return count($this->items) === 0;
     }
 
     public function first()
@@ -47,10 +48,11 @@ final class ItemCollection implements IteratorAggregate, CollectionInterface
         }
 
         $this->items->rewind();
+
         return $this->items->current();
     }
 
-    public function getIterator() : Traversable
+    public function getIterator(): Traversable
     {
         return $this->items;
     }

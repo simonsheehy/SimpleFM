@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder;
 
@@ -43,6 +44,7 @@ final class MetadataHydration implements HydrationInterface
     public function hydrateNewEntity(array $data)
     {
         $reflectionClass = new ReflectionClass($this->entityMetadata->getClassName());
+
         return $this->hydrateExistingEntity($data, $reflectionClass->newInstanceWithoutConstructor());
     }
 
@@ -84,13 +86,13 @@ final class MetadataHydration implements HydrationInterface
         foreach ($metadata->getEmbeddables() as $embeddableMetadata) {
             $prefix = $embeddableMetadata->getFieldNamePrefix();
 
-            if ('' === $prefix) {
+            if ($prefix === '') {
                 $embeddableData = $data;
             } else {
                 $prefixLength = strlen($prefix);
 
                 foreach ($data as $key => $value) {
-                    if (0 !== strpos($key, $prefix)) {
+                    if (strpos($key, $prefix) !== 0) {
                         continue;
                     }
 
@@ -102,7 +104,7 @@ final class MetadataHydration implements HydrationInterface
             $reflectionProperty->setAccessible(true);
             $embeddable = $reflectionProperty->getValue($entity);
 
-            if (null === $embeddable) {
+            if ($embeddable === null) {
                 $embeddable = (new ReflectionClass($embeddableMetadata->getMetadata()->getClassName()))
                     ->newInstanceWithoutConstructor();
             }
@@ -140,6 +142,7 @@ final class MetadataHydration implements HydrationInterface
         foreach ($toOne as $relationMetadata) {
             if (empty($data[$relationMetadata->getTargetTable()])) {
                 $this->setProperty($reflectionClass, $entity, $relationMetadata->getPropertyName(), null);
+
                 continue;
             }
 
@@ -152,6 +155,7 @@ final class MetadataHydration implements HydrationInterface
                     $relationMetadata->getPropertyName(),
                     $repository->createEntity($data[$relationMetadata->getTargetTable()][0])
                 );
+
                 continue;
             }
 

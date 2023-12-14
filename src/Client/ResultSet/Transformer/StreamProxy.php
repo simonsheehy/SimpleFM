@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet\Transformer;
 
@@ -29,7 +30,7 @@ final class StreamProxy implements StreamInterface
         $this->assetUri = $assetUri;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getWrappedStream()->__toString();
     }
@@ -44,12 +45,12 @@ final class StreamProxy implements StreamInterface
         return $this->getWrappedStream()->detach();
     }
 
-    public function eof() : bool
+    public function eof(): bool
     {
         return $this->getWrappedStream()->eof();
     }
 
-    public function getContents() : string
+    public function getContents(): string
     {
         return $this->getWrappedStream()->getContents();
     }
@@ -64,22 +65,22 @@ final class StreamProxy implements StreamInterface
         return $this->getWrappedStream()->getSize();
     }
 
-    public function isReadable() : bool
+    public function isReadable(): bool
     {
         return $this->getWrappedStream()->isReadable();
     }
 
-    public function isSeekable() : bool
+    public function isSeekable(): bool
     {
         return $this->getWrappedStream()->isSeekable();
     }
 
-    public function isWritable() : bool
+    public function isWritable(): bool
     {
         return $this->getWrappedStream()->isWritable();
     }
 
-    public function read($length) : string
+    public function read($length): string
     {
         return $this->getWrappedStream()->read($length);
     }
@@ -94,19 +95,19 @@ final class StreamProxy implements StreamInterface
         $this->getWrappedStream()->seek($offset, $whence);
     }
 
-    public function tell() : int
+    public function tell(): int
     {
         return $this->getWrappedStream()->tell();
     }
 
-    public function write($string) : int
+    public function write($string): int
     {
         return $this->getWrappedStream()->write($string);
     }
 
-    private function getWrappedStream() : StreamInterface
+    private function getWrappedStream(): StreamInterface
     {
-        if (null !== $this->wrappedStream) {
+        if ($this->wrappedStream !== null) {
             return $this->wrappedStream;
         }
 

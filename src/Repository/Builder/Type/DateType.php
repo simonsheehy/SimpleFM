@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Type;
 
@@ -10,21 +11,23 @@ final class DateType implements TypeInterface
 {
     public function fromFileMakerValue($value)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
         Assertion::isInstanceOf($value, DateTimeInterface::class);
+
         return $value;
     }
 
     public function toFileMakerValue($value)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
         Assertion::isInstanceOf($value, DateTimeInterface::class);
+
         return $value->format('m/d/Y');
     }
 }

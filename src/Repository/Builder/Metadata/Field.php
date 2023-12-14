@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -46,27 +47,27 @@ final class Field
         $this->readOnly = $readOnly;
     }
 
-    public function getFieldName() : string
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    public function getPropertyName() : string
+    public function getPropertyName(): string
     {
         return $this->propertyName;
     }
 
-    public function getType() : TypeInterface
+    public function getType(): TypeInterface
     {
         return $this->type;
     }
 
-    public function isRepeatable() : bool
+    public function isRepeatable(): bool
     {
         return $this->repeatable;
     }
 
-    public function isReadOnly() : bool
+    public function isReadOnly(): bool
     {
         return $this->readOnly;
     }

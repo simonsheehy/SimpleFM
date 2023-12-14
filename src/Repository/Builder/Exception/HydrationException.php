@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Exception;
 
@@ -14,7 +15,7 @@ final class HydrationException extends RuntimeException implements ExceptionInte
         Entity $entityMetadata,
         Field $fieldMetadata,
         Exception $previousException
-    ) : self {
+    ): self {
         return new self(sprintf(
             'Could not hydrate field "%s" for entity "%s", reason: %s',
             $fieldMetadata->getPropertyName(),

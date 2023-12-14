@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository;
 
@@ -56,6 +57,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) use ($identity) {
             $this->assertSame($identity, $command->getIdentity());
+
             return new ItemCollection([], 0);
         }, null, null)->withIdentity($identity);
 
@@ -71,6 +73,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&-recid=1&-find&-max=1', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -109,6 +112,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=bar&-find&-max=1', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -119,6 +123,7 @@ final class RepositoryTest extends TestCase
     {
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=%3E%3D5&-find&-max=1', (string) $command);
+
             return new ItemCollection([], 0);
         });
 
@@ -143,6 +148,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&-query=%28q1%29&-q1=foo&-q1.value=bar&-findquery&-max=1', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -170,6 +176,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&-findall', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -187,6 +194,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-sortfield.1=foo&-sortorder.1=ascend&-max=1&-skip=2&-findall',
                 (string) $command
             );
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -201,6 +209,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=bar&-find', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -218,6 +227,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&foo=bar&-sortfield.1=foo&-sortorder.1=ascend&-max=1&-skip=2&-find',
                 (string) $command
             );
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -231,6 +241,7 @@ final class RepositoryTest extends TestCase
     {
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=%3E%3D5&-find', (string) $command);
+
             return new ItemCollection([], 0);
         });
 
@@ -245,6 +256,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&-query=%28q1%29&-q1=foo&-q1.value=bar&-findquery', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -263,10 +275,11 @@ final class RepositoryTest extends TestCase
             $this->assertSame(
                 (
                     '-lay=foo&-query=%28q1%29&-q1=foo&-q1.value=bar&-sortfield.1=foo&-sortorder.1=ascend&-max=1&-skip=2'
-                    . '&-findquery'
+                    .'&-findquery'
                 ),
                 (string) $command
             );
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal());
 
@@ -288,6 +301,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=bar&-new', (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -312,6 +326,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&foo=bar&-recid=1&-modid=1&-edit',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -337,6 +352,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&foo=bar&-recid=1&-edit',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -371,6 +387,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&foo=bar&-recid=1&-modid=1&-edit',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -392,6 +409,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&-recid=1&-delete&-modid=1',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -413,6 +431,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&-recid=1&-delete',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -443,6 +462,7 @@ final class RepositoryTest extends TestCase
                 '-lay=foo&-recid=1&-find&-max=1',
                 '-lay=foo&-recid=1&-delete&-modid=1',
             ][++$index], (string) $command);
+
             return new ItemCollection([['record-id' => 1, 'mod-id' => 1, 'foo' => 'bar']], 1);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -485,6 +505,7 @@ final class RepositoryTest extends TestCase
 
         $repository = $this->createAssertiveRepository(function (Command $command) {
             $this->assertSame('-lay=foo&foo=bar&-new', (string) $command);
+
             return new ItemCollection([], 0);
         }, $hydration->reveal(), $extraction->reveal());
 
@@ -495,17 +516,17 @@ final class RepositoryTest extends TestCase
     }
 
     private function createAssertiveRepository(
-        callable $resultSetCallback = null,
-        HydrationInterface $hydration = null,
-        ExtractionInterface $extraction = null,
-        IdentityHandlerInterface $identityHandler = null
-    ) : Repository {
+        ?callable $resultSetCallback = null,
+        ?HydrationInterface $hydration = null,
+        ?ExtractionInterface $extraction = null,
+        ?IdentityHandlerInterface $identityHandler = null
+    ): Repository {
         $resultSetClient = $this->prophesize(ResultSetClientInterface::class);
         $resultSetClient->quoteString(Argument::any())->will(function (array $parameters) {
             return $parameters[0];
         });
 
-        if (null !== $resultSetCallback) {
+        if ($resultSetCallback !== null) {
             $resultSetClient->execute(Argument::any())->will(function (array $parameters) use ($resultSetCallback) {
                 return $resultSetCallback($parameters[0]);
             });
@@ -520,9 +541,10 @@ final class RepositoryTest extends TestCase
         );
     }
 
-    private function createMockProxy($entity, $relationId) : ProxyInterface
+    private function createMockProxy($entity, $relationId): ProxyInterface
     {
-        return new class($entity, $relationId) implements ProxyInterface {
+        return new class($entity, $relationId) implements ProxyInterface
+        {
             private $entity;
 
             private $relationId;

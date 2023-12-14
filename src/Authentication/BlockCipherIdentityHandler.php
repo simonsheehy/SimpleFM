@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Authentication;
 
@@ -17,7 +18,7 @@ final class BlockCipherIdentityHandler implements IdentityHandlerInterface
         $this->blockCipher = $blockCipher;
     }
 
-    public function createIdentity(string $username, string $password) : Identity
+    public function createIdentity(string $username, string $password): Identity
     {
         return new Identity(
             $username,
@@ -25,7 +26,7 @@ final class BlockCipherIdentityHandler implements IdentityHandlerInterface
         );
     }
 
-    public function decryptPassword(Identity $identity) : string
+    public function decryptPassword(Identity $identity): string
     {
         return $this->blockCipher->decrypt($identity->getEncryptedPassword());
     }

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository\Builder;
 
@@ -512,6 +513,7 @@ final class MetadataHydrationTest extends TestCase
             $repository->findByQuery(Argument::any())->will(function (array $parameters) use ($testCase) {
                 $testCase->assertSame('5', $parameters[0]->toParameters()['-q1.value']);
                 $testCase->assertSame('6', $parameters[0]->toParameters()['-q2.value']);
+
                 return new ItemCollection(['child-entity-1', 'child-entity-2'], 2);
             });
         }
@@ -530,7 +532,7 @@ final class MetadataHydrationTest extends TestCase
         $this->assertSame(['child-entity-1', 'child-entity-2'], iterator_to_array($entity->bar));
     }
 
-    private function createMockProxy() : callable
+    private function createMockProxy(): callable
     {
         return function (array $parameters) {
             return new class($parameters[1](), $parameters[2]) implements ProxyInterface

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet\Exception;
 
@@ -8,7 +9,7 @@ use Exception;
 
 final class ParseException extends DomainException implements ExceptionInterface
 {
-    public static function fromInvalidFieldType(string $name, string $type) : self
+    public static function fromInvalidFieldType(string $name, string $type): self
     {
         return new self(sprintf('Invalid field type "%s" for field "%s" discovered', $type, $name));
     }
@@ -18,7 +19,7 @@ final class ParseException extends DomainException implements ExceptionInterface
         string $table,
         string $layout,
         Exception $previousException
-    ) : self {
+    ): self {
         return new self(sprintf(
             'Could not parse response from database "%s" with table "%s" and layout "%s". Reason: %s',
             $database,

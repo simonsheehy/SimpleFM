@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet\Transformer;
 
@@ -19,7 +20,7 @@ final class ContainerTransformer
 
     public function __invoke(string $value)
     {
-        if ('' === $value) {
+        if ($value === '') {
             return null;
         }
 

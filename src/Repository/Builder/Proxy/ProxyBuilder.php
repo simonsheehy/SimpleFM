@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Proxy;
 
@@ -21,21 +22,22 @@ final class ProxyBuilder implements ProxyBuilderInterface
      */
     private $proxyFolder;
 
-    public function __construct(string $proxyFolder = null)
+    public function __construct(?string $proxyFolder = null)
     {
         $this->proxyFolder = $proxyFolder;
     }
 
-    public function createProxy(string $entityInterfaceName, callable $initializer, $relationId) : ProxyInterface
+    public function createProxy(string $entityInterfaceName, callable $initializer, $relationId): ProxyInterface
     {
-        $proxyClassName = str_replace('\\', '_', $entityInterfaceName) . 'Proxy';
-        $fullyQualifiedClassName = '\\' . self::PROXY_NAMESPACE . '\\' . $proxyClassName;
+        $proxyClassName = str_replace('\\', '_', $entityInterfaceName).'Proxy';
+        $fullyQualifiedClassName = '\\'.self::PROXY_NAMESPACE.'\\'.$proxyClassName;
 
         if (class_exists($fullyQualifiedClassName)) {
             return new $fullyQualifiedClassName($initializer, $relationId);
         }
 
         require_once $this->buildProxyClass($entityInterfaceName, self::PROXY_NAMESPACE, $proxyClassName);
+
         return new $fullyQualifiedClassName($initializer, $relationId);
     }
 
@@ -43,10 +45,10 @@ final class ProxyBuilder implements ProxyBuilderInterface
         string $entityInterfaceName,
         string $proxyNamespace,
         string $proxyClassName
-    ) : string {
+    ): string {
         $reflectionClass = new ReflectionClass($entityInterfaceName);
 
-        if (!$reflectionClass->isInterface()) {
+        if (! $reflectionClass->isInterface()) {
             throw InvalidInterfaceException::fromInvalidInterface($entityInterfaceName);
         }
 
@@ -82,7 +84,7 @@ final class ProxyBuilder implements ProxyBuilderInterface
         $getRealEntityGenerator->setBody('
             if (null === $this->realEntity) {
                 $this->realEntity = ($this->initializer)();
-                \Assert\Assertion::isInstanceOf($this->realEntity, \\' . $entityInterfaceName . '::class);
+                \Assert\Assertion::isInstanceOf($this->realEntity, \\'.$entityInterfaceName.'::class);
             };
 
             return $this->realEntity;
@@ -105,9 +107,9 @@ final class ProxyBuilder implements ProxyBuilderInterface
                 $parameterGenerators[] = $parameterGenerator;
 
                 if ($reflectionParameter->isVariadic()) {
-                    $parameters[] = '...$' . $reflectionParameter->getName();
+                    $parameters[] = '...$'.$reflectionParameter->getName();
                 } else {
-                    $parameters[] = '$' . $reflectionParameter->getName();
+                    $parameters[] = '$'.$reflectionParameter->getName();
                 }
             }
 
@@ -120,15 +122,15 @@ final class ProxyBuilder implements ProxyBuilderInterface
             $body = '
                 if (null === $this->realEntity) {
                     $this->realEntity = ($this->initializer)();
-                    \Assert\Assertion::isInstanceOf($this->realEntity, \\' . $entityInterfaceName . '::class);
+                    \Assert\Assertion::isInstanceOf($this->realEntity, \\'.$entityInterfaceName.'::class);
                 };
             ';
 
-            if ('void' !== $returnType) {
+            if ($returnType !== 'void') {
                 $body .= 'return ';
             }
 
-            $body .= '$this->realEntity->' . $reflectionMethod->getName() . '(' . implode(', ', $parameters) . ');';
+            $body .= '$this->realEntity->'.$reflectionMethod->getName().'('.implode(', ', $parameters).');';
 
             $methodGenerator->setBody($body);
             $classGenerator->addMethodFromGenerator($methodGenerator);
@@ -138,7 +140,7 @@ final class ProxyBuilder implements ProxyBuilderInterface
         $fileGenerator->setClass($classGenerator);
 
         $filename = (
-            null === $this->proxyFolder
+            $this->proxyFolder === null
             ? tempnam(sys_get_temp_dir(), $proxyClassName)
             : sprintf('%s/%s.php', $this->proxyFolder, $proxyClassName)
         );

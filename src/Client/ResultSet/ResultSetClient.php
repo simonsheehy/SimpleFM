@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet;
 
@@ -40,13 +41,13 @@ final class ResultSetClient implements ResultSetClientInterface
         $this->initializeTransformers($serverTimeZone);
     }
 
-    public function execute(Command $command) : CollectionInterface
+    public function execute(Command $command): CollectionInterface
     {
         $xml = $this->connection->execute($command, self::GRAMMAR_PATH);
         $errorCode = (int) $xml->error['code'];
         $dataSource = $xml->datasource;
 
-        if (8 === $errorCode || 401 === $errorCode) {
+        if ($errorCode === 8 || $errorCode === 401) {
             // "Empty result" or "No records match the request"
             return new ItemCollection([], 0);
         } elseif ($errorCode > 0) {
@@ -79,7 +80,7 @@ final class ResultSetClient implements ResultSetClientInterface
         return new ItemCollection($records, (int) $xml->resultset[0]['count']);
     }
 
-    public function quoteString(string $string) : string
+    public function quoteString(string $string): string
     {
         return strtr($string, [
             '\\' => '\\\\',
@@ -100,7 +101,7 @@ final class ResultSetClient implements ResultSetClientInterface
         ]);
     }
 
-    private function parseRecord(SimpleXMLElement $recordData, array $metadata) : array
+    private function parseRecord(SimpleXMLElement $recordData, array $metadata): array
     {
         $record = $this->createRecord($recordData, $metadata);
 
@@ -122,7 +123,7 @@ final class ResultSetClient implements ResultSetClientInterface
         return $record;
     }
 
-    private function createRecord(SimpleXMLElement $recordData, array $metadata, int $prefixLength = 0) : array
+    private function createRecord(SimpleXMLElement $recordData, array $metadata, int $prefixLength = 0): array
     {
         $record = [
             'record-id' => (int) $recordData['record-id'],
@@ -133,8 +134,9 @@ final class ResultSetClient implements ResultSetClientInterface
             $fieldName = (string) $fieldData['name'];
             $localName = substr($fieldName, $prefixLength);
 
-            if (!$metadata[$fieldName]['repeatable']) {
+            if (! $metadata[$fieldName]['repeatable']) {
                 $record[$localName] = $metadata[$fieldName]['transformer']((string) $fieldData->data);
+
                 continue;
             }
 
@@ -148,7 +150,7 @@ final class ResultSetClient implements ResultSetClientInterface
         return $record;
     }
 
-    private function parseMetadata(SimpleXMLElement $xml) : array
+    private function parseMetadata(SimpleXMLElement $xml): array
     {
         $metadata = [];
 
@@ -166,15 +168,15 @@ final class ResultSetClient implements ResultSetClientInterface
         return $metadata;
     }
 
-    private function getFieldTransformer(SimpleXMLElement $fieldDefinition) : callable
+    private function getFieldTransformer(SimpleXMLElement $fieldDefinition): callable
     {
         $type = (string) $fieldDefinition['result'];
 
-        if ('unknown' === $type) {
+        if ($type === 'unknown') {
             throw UnknownFieldException::fromUnknownField();
         }
 
-        if (!array_key_exists($type, $this->transformers)) {
+        if (! array_key_exists($type, $this->transformers)) {
             throw ParseException::fromInvalidFieldType(
                 (string) $fieldDefinition['name'],
                 (string) $fieldDefinition['result']

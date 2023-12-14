@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\Layout;
 
@@ -29,12 +30,12 @@ final class Layout
         $this->fields = $fields;
     }
 
-    public function getDatabase() : string
+    public function getDatabase(): string
     {
         return $this->database;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -42,25 +43,26 @@ final class Layout
     /**
      * @return Field[]
      */
-    public function getFields() : array
+    public function getFields(): array
     {
         return $this->fields;
     }
 
-    public function hasField(string $name) : bool
+    public function hasField(string $name): bool
     {
-        return (bool) array_filter($this->fields, function (Field $field) use ($name) : bool {
+        return (bool) array_filter($this->fields, function (Field $field) use ($name): bool {
             return $field->getName() === $name;
         });
     }
 
-    public function getField(string $name) : Field
+    public function getField(string $name): Field
     {
-        $fields = array_filter($this->fields, function (Field $field) use ($name) : bool {
+        $fields = array_filter($this->fields, function (Field $field) use ($name): bool {
             return $field->getName() === $name;
         });
 
         Assertion::notEmpty($fields);
+
         return reset($fields);
     }
 }

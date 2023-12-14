@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\Layout;
 
@@ -22,31 +23,32 @@ final class Field
      */
     private $valueList;
 
-    public function __construct(string $name, string $type, ValueList $valueList = null)
+    public function __construct(string $name, string $type, ?ValueList $valueList = null)
     {
         $this->name = $name;
         $this->type = $type;
         $this->valueList = $valueList;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function hasValueList() : bool
+    public function hasValueList(): bool
     {
-        return null !== $this->valueList;
+        return $this->valueList !== null;
     }
 
-    public function getValueList() : ValueList
+    public function getValueList(): ValueList
     {
         Assertion::notNull($this->valueList);
+
         return $this->valueList;
     }
 }

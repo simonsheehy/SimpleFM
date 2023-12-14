@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder;
 
@@ -25,12 +26,12 @@ final class MetadataExtraction implements ExtractionInterface
         $this->entityMetadata = $entityMetadata;
     }
 
-    public function extract($entity) : array
+    public function extract($entity): array
     {
         return $this->extractWithMetadata($entity, $this->entityMetadata);
     }
 
-    private function extractWithMetadata($entity, Entity $metadata) : array
+    private function extractWithMetadata($entity, Entity $metadata): array
     {
         if ($entity instanceof ProxyInterface) {
             $entity = $entity->__getRealEntity();
@@ -56,8 +57,9 @@ final class MetadataExtraction implements ExtractionInterface
                     $fieldMetadata->getPropertyName()
                 );
 
-                if (!$fieldMetadata->isRepeatable()) {
+                if (! $fieldMetadata->isRepeatable()) {
                     $data[$fieldName] = $type->toFileMakerValue($value);
+
                     continue;
                 }
 
@@ -80,19 +82,19 @@ final class MetadataExtraction implements ExtractionInterface
             );
 
             foreach ($embeddableData as $key => $value) {
-                $data[$prefix . $key] = $value;
+                $data[$prefix.$key] = $value;
             }
         }
 
         $toOne = array_filter(
             $metadata->getManyToOne(),
             function (ManyToOne $manyToOneMetadata) {
-                return !$manyToOneMetadata->isReadOnly();
+                return ! $manyToOneMetadata->isReadOnly();
             }
         ) + array_filter(
             $metadata->getOneToOne(),
             function (OneToOne $oneToOneMetadata) {
-                return $oneToOneMetadata->isOwningSide() && !$oneToOneMetadata->isReadOnly();
+                return $oneToOneMetadata->isOwningSide() && ! $oneToOneMetadata->isReadOnly();
             }
         );
 
@@ -103,8 +105,9 @@ final class MetadataExtraction implements ExtractionInterface
                 $relationMetadata->getPropertyName()
             );
 
-            if (null === $relation) {
+            if ($relation === null) {
                 $data[$relationMetadata->getFieldName()] = null;
+
                 continue;
             }
 
@@ -130,6 +133,7 @@ final class MetadataExtraction implements ExtractionInterface
     {
         $reflectionProperty = $reflectionClass->getProperty($propertyName);
         $reflectionProperty->setAccessible(true);
+
         return $reflectionProperty->getValue($entity);
     }
 }

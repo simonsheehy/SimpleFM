@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -30,17 +31,17 @@ final class Embeddable
         $this->metadata = $metadata;
     }
 
-    public function getPropertyName() : string
+    public function getPropertyName(): string
     {
         return $this->propertyName;
     }
 
-    public function getFieldNamePrefix() : string
+    public function getFieldNamePrefix(): string
     {
         return $this->fieldNamePrefix;
     }
 
-    public function getMetadata() : Entity
+    public function getMetadata(): Entity
     {
         return $this->metadata;
     }

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Connection\Exception;
 
@@ -9,7 +10,7 @@ use RuntimeException;
 
 final class InvalidResponseException extends RuntimeException implements ExceptionInterface
 {
-    public static function fromUnsuccessfulResponse(ResponseInterface $response) : self
+    public static function fromUnsuccessfulResponse(ResponseInterface $response): self
     {
         return new self(sprintf(
             'The FileMaker server responded with an unexpected error code: %d %s',
@@ -18,7 +19,7 @@ final class InvalidResponseException extends RuntimeException implements Excepti
         ), (int) $response->getStatusCode());
     }
 
-    public static function fromXmlError(LibXMLError $error) : self
+    public static function fromXmlError(LibXMLError $error): self
     {
         return new self(sprintf('An unexpected XML error occured: %s', $error->message));
     }

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository;
 
@@ -11,7 +12,7 @@ use Soliant\SimpleFM\Repository\Query\FindQuery;
 use Soliant\SimpleFM\Repository\Query\Query;
 use Traversable;
 
-final class LazyLoadedCollection implements IteratorAggregate, CollectionInterface
+final class LazyLoadedCollection implements CollectionInterface, IteratorAggregate
 {
     /**
      * @var RepositoryInterface
@@ -40,9 +41,9 @@ final class LazyLoadedCollection implements IteratorAggregate, CollectionInterfa
         $this->sparseRecords = $sparseRecords;
     }
 
-    public function getIterator() : Traversable
+    public function getIterator(): Traversable
     {
-        if (null !== $this->iterator) {
+        if ($this->iterator !== null) {
             return $this->iterator;
         }
 
@@ -51,26 +52,26 @@ final class LazyLoadedCollection implements IteratorAggregate, CollectionInterfa
         }
 
         $findQuery = new FindQuery();
-        $findQuery->addOrQueries(...array_map(function (array $sparseRecord) : Query {
+        $findQuery->addOrQueries(...array_map(function (array $sparseRecord): Query {
             return new Query($this->idFieldName, (string) $sparseRecord[$this->idFieldName]);
         }, $this->sparseRecords));
 
         return $this->iterator = new IteratorIterator($this->repository->findByQuery($findQuery));
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->sparseRecords);
     }
 
-    public function getTotalCount() : int
+    public function getTotalCount(): int
     {
         return count($this->sparseRecords);
     }
 
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
-        return 0 === count($this->sparseRecords);
+        return count($this->sparseRecords) === 0;
     }
 
     public function first()
@@ -81,6 +82,7 @@ final class LazyLoadedCollection implements IteratorAggregate, CollectionInterfa
 
         $iterator = $this->getIterator();
         $iterator->rewind();
+
         return $iterator->current();
     }
 }

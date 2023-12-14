@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -62,11 +63,11 @@ final class OneToOne
         string $targetTable,
         string $targetEntity,
         string $targetFieldName,
-        string $targetInterfaceName = null,
+        ?string $targetInterfaceName = null,
         bool $owningSide = false,
         bool $readOnly = false,
-        string $fieldName = null,
-        string $targetPropertyName = null,
+        ?string $fieldName = null,
+        ?string $targetPropertyName = null,
         bool $eagerHydration = false
     ) {
         if ($owningSide) {
@@ -86,58 +87,61 @@ final class OneToOne
         $this->eagerHydration = $eagerHydration;
     }
 
-    public function getPropertyName() : string
+    public function getPropertyName(): string
     {
         return $this->propertyName;
     }
 
-    public function getTargetTable() : string
+    public function getTargetTable(): string
     {
         return $this->targetTable;
     }
 
-    public function getTargetEntity() : string
+    public function getTargetEntity(): string
     {
         return $this->targetEntity;
     }
 
-    public function getTargetFieldName() : string
+    public function getTargetFieldName(): string
     {
         return $this->targetFieldName;
     }
 
-    public function getTargetInterfaceName() : string
+    public function getTargetInterfaceName(): string
     {
         Assertion::notNull(
             $this->targetInterfaceName,
             sprintf('Target entity %s has no interface name defined', $this->targetEntity)
         );
+
         return $this->targetInterfaceName;
     }
 
-    public function isOwningSide() : bool
+    public function isOwningSide(): bool
     {
         return $this->owningSide;
     }
 
-    public function getFieldName() : string
+    public function getFieldName(): string
     {
         Assertion::notNull($this->fieldName);
+
         return $this->fieldName;
     }
 
-    public function getTargetPropertyName() : string
+    public function getTargetPropertyName(): string
     {
         Assertion::notNull($this->targetPropertyName);
+
         return $this->targetPropertyName;
     }
 
-    public function isReadOnly() : bool
+    public function isReadOnly(): bool
     {
         return $this->readOnly;
     }
 
-    public function hasEagerHydration() : bool
+    public function hasEagerHydration(): bool
     {
         return $this->eagerHydration;
     }

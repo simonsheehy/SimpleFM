@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Authentication;
 
@@ -21,12 +22,12 @@ final class Identity
         $this->encryptedPassword = $encryptedPassword;
     }
 
-    public function getUsername() : string
+    public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function getEncryptedPassword() : string
+    public function getEncryptedPassword(): string
     {
         return $this->encryptedPassword;
     }

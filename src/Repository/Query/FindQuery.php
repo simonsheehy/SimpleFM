@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Query;
 
@@ -31,7 +32,7 @@ final class FindQuery
         $this->queries[] = $queries;
     }
 
-    public function toParameters() : array
+    public function toParameters(): array
     {
         if (empty($this->queries)) {
             throw EmptyQueryException::fromEmptyQueryArray();
@@ -47,12 +48,14 @@ final class FindQuery
             if ($query instanceof Query) {
                 $parameters[sprintf('-q%d', ++$index)] = $query->getFieldName();
                 $parameters[sprintf('-q%d.value', $index)] = $query->getValue();
+
                 continue;
             }
 
             foreach ($query as $andQuery) {
                 $parameters[sprintf('-q%d', ++$index)] = $andQuery->getFieldName();
                 $parameters[sprintf('-q%d.value', $index)] = $andQuery->getValue();
+
                 continue;
             }
         }
@@ -60,7 +63,7 @@ final class FindQuery
         return $parameters;
     }
 
-    private function buildQueryParameter() : string
+    private function buildQueryParameter(): string
     {
         $index = 0;
         $orQueries = [];
@@ -68,6 +71,7 @@ final class FindQuery
         foreach ($this->queries as $query) {
             if ($query instanceof Query) {
                 $orQueries[] = sprintf('%sq%d', $query->isExclude() ? '!' : '', ++$index);
+
                 continue;
             }
 
@@ -80,6 +84,6 @@ final class FindQuery
             $orQueries[] = implode(',', $andQueries);
         }
 
-        return '(' . implode(');(', $orQueries) . ')';
+        return '('.implode(');(', $orQueries).')';
     }
 }

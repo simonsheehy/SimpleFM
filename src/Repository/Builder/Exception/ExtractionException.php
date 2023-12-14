@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Exception;
 
@@ -14,7 +15,7 @@ final class ExtractionException extends RuntimeException implements ExceptionInt
         Entity $entityMetadata,
         Field $fieldMetadata,
         Exception $previousException
-    ) : self {
+    ): self {
         return new self(sprintf(
             'Could not extract field "%s" from entity "%s", reason: %s',
             $fieldMetadata->getPropertyName(),

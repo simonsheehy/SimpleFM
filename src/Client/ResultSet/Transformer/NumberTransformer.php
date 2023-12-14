@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet\Transformer;
 
@@ -11,26 +12,26 @@ final class NumberTransformer
     {
         $cleanedValue = preg_replace_callback(
             '(^[^\d\-.]*(-?)([^.]*)(.?)(.*)$)',
-            function (array $match) : string {
+            function (array $match): string {
                 return
                     $match[1]
-                    . preg_replace('([^\d]+)', '', $match[2])
-                    . $match[3]
-                    . preg_replace('([^\d]+)', '', $match[4]);
+                    .preg_replace('([^\d]+)', '', $match[2])
+                    .$match[3]
+                    .preg_replace('([^\d]+)', '', $match[4]);
             },
             $value
         );
 
-        if ('' === $cleanedValue) {
+        if ($cleanedValue === '') {
             return null;
         }
 
-        if ('-' === $cleanedValue) {
+        if ($cleanedValue === '-') {
             $cleanedValue = '0';
         }
 
-        if (0 === strpos($cleanedValue, '.')) {
-            $cleanedValue = '0' . $cleanedValue;
+        if (strpos($cleanedValue, '.') === 0) {
+            $cleanedValue = '0'.$cleanedValue;
         }
 
         return Decimal::fromString(rtrim($cleanedValue, '.'));

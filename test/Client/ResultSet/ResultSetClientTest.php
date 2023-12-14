@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Client\ResultSet;
 
@@ -17,7 +18,7 @@ use Soliant\SimpleFM\Connection\ConnectionInterface;
 
 final class ResultSetClientTest extends TestCase
 {
-    public static function validXmlProvider() : array
+    public static function validXmlProvider(): array
     {
         return [
             'project-sample-data' => [
@@ -32,7 +33,7 @@ final class ResultSetClientTest extends TestCase
                         'Project Name' => 'Launch web site',
                         'Description' => (
                             "Launch the web site with our new branding and product line.\n\n"
-                            . "                    Third line"
+                            .'                    Third line'
                         ),
                         'Status' => Decimal::fromInteger(4),
                         'Status on Screen' => 'Overdue',
@@ -112,7 +113,7 @@ final class ResultSetClientTest extends TestCase
                         'Project Name' => 'Prototype',
                         'Description' => (
                             "Build a working prototype of the new product.\n\n\n"
-                            . "                    Fourth line."
+                            .'                    Fourth line.'
                         ),
                         'Status' => Decimal::fromInteger(4),
                         'Status on Screen' => 'Overdue',
@@ -192,7 +193,7 @@ final class ResultSetClientTest extends TestCase
                         'Project Name' => 'Investor meeting',
                         'Description' => (
                             "This is important. We need the investors to have confidence.\n"
-                            . "                    Second line."
+                            .'                    Second line.'
                         ),
                         'Status' => Decimal::fromInteger(4),
                         'Status on Screen' => 'Overdue',
@@ -296,7 +297,7 @@ final class ResultSetClientTest extends TestCase
         ];
     }
 
-    public function specialCharacterProvider() : array
+    public function specialCharacterProvider(): array
     {
         return [
             ['\\', '\\\\'],
@@ -382,7 +383,7 @@ final class ResultSetClientTest extends TestCase
     {
         $this->expectException(ParseException::class);
         $this->expectExceptionMessage('Could not parse response from database "XmlSchemaDemo" with table "Parent" and '
-            . 'layout "Parent". Reason: Invalid field type "fake" for field "id" discovered');
+            .'layout "Parent". Reason: Invalid field type "fake" for field "id" discovered');
 
         $command = new Command('foo', []);
         $client = $this->createClient($command, 'invalidFieldTypeFake.xml');
@@ -430,8 +431,8 @@ final class ResultSetClientTest extends TestCase
         $this->expectException(UnknownFieldException::class);
         $this->expectExceptionMessage(
             'Unknown field in database "XmlSchemaDemo" with table "Child" and layout "Child". Reason: '
-            . 'A field definition result is "unknown". This is normally due to a field on the layout having being '
-            . 'deleted from the table or the authenticating user not having permission to view it.'
+            .'A field definition result is "unknown". This is normally due to a field on the layout having being '
+            .'deleted from the table or the authenticating user not having permission to view it.'
         );
 
         $command = new Command('foo', []);
@@ -448,11 +449,12 @@ final class ResultSetClientTest extends TestCase
         $this->assertSame($expectedResult, $client->quoteString($testString));
     }
 
-    private function createClient(Command $command, string $xmlPath) : ResultSetClient
+    private function createClient(Command $command, string $xmlPath): ResultSetClient
     {
-        $xml = simplexml_load_file(__DIR__ . '/TestAssets/' . $xmlPath);
+        $xml = simplexml_load_file(__DIR__.'/TestAssets/'.$xmlPath);
         $connection = $this->prophesize(ConnectionInterface::class);
         $connection->execute($command, '/fmi/xml/fmresultset.xml')->willReturn($xml);
+
         return new ResultSetClient($connection->reveal(), new DateTimeZone('UTC'));
     }
 }

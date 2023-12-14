@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Connection;
 
@@ -47,8 +48,8 @@ final class Connection implements ConnectionInterface
         HttpClient $httpClient,
         UriInterface $uri,
         string $database,
-        IdentityHandlerInterface $identityHandler = null,
-        LoggerInterface $logger = null
+        ?IdentityHandlerInterface $identityHandler = null,
+        ?LoggerInterface $logger = null
     ) {
         $this->httpClient = $httpClient;
         $this->uri = $uri;
@@ -57,12 +58,12 @@ final class Connection implements ConnectionInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    public function execute(Command $command, string $grammarPath) : SimpleXMLElement
+    public function execute(Command $command, string $grammarPath): SimpleXMLElement
     {
         $uri = $this->uri->withPath($grammarPath);
         $response = $this->httpClient->sendRequest($this->buildRequest($command, $uri));
 
-        if (200 !== (int) $response->getStatusCode()) {
+        if ((int) $response->getStatusCode() !== 200) {
             throw InvalidResponseException::fromUnsuccessfulResponse($response);
         }
 
@@ -70,14 +71,14 @@ final class Connection implements ConnectionInterface
         $xml = simplexml_load_string((string) $response->getBody());
         libxml_use_internal_errors($previousValue);
 
-        if (false === $xml) {
+        if ($xml === false) {
             throw InvalidResponseException::fromXmlError(libxml_get_last_error());
         }
 
         return $xml;
     }
 
-    public function getAsset(string $assetUri) : StreamInterface
+    public function getAsset(string $assetUri): StreamInterface
     {
         $assetUriParts = parse_url($assetUri);
         $uri = $this->uri->withUserInfo('');
@@ -95,20 +96,20 @@ final class Connection implements ConnectionInterface
 
         $credentials = urldecode($this->uri->getUserInfo());
 
-        if ('' !== $credentials) {
+        if ($credentials !== '') {
             $request = $request->withAddedHeader('Authorization', sprintf('Basic %s', base64_encode($credentials)));
         }
 
         $response = $this->httpClient->sendRequest($request);
 
-        if (200 !== (int) $response->getStatusCode()) {
+        if ((int) $response->getStatusCode() !== 200) {
             throw InvalidResponseException::fromUnsuccessfulResponse($response);
         }
 
         return $response->getBody();
     }
 
-    private function buildRequest(Command $command, UriInterface $uri) : RequestInterface
+    private function buildRequest(Command $command, UriInterface $uri): RequestInterface
     {
         $parameters = sprintf('-db=%s&%s', urlencode($this->database), $command);
 
@@ -137,7 +138,7 @@ final class Connection implements ConnectionInterface
 
         $this->logger->info(sprintf('%s?%s', (string) $uri->withUserInfo(''), $parameters));
 
-        if ('' === $credentials) {
+        if ($credentials === '') {
             return $request;
         }
 

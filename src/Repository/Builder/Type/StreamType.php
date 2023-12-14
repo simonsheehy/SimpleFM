@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Type;
 
@@ -11,11 +12,12 @@ final class StreamType implements TypeInterface
 {
     public function fromFileMakerValue($value)
     {
-        if (null === $value) {
+        if ($value === null) {
             return null;
         }
 
         Assertion::isInstanceOf($value, StreamInterface::class);
+
         return $value;
     }
 

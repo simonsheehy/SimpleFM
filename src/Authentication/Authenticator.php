@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Authentication;
 
@@ -42,21 +43,21 @@ final class Authenticator
         $this->usernameField = $usernameField;
     }
 
-    public function authenticate(string $username, string $password) : Result
+    public function authenticate(string $username, string $password): Result
     {
         $identity = $this->identityHandler->createIdentity($username, $password);
 
         try {
             $resultSet = $this->resultSetClient->execute(
                 (new Command($this->identityLayout, [
-                    $this->usernameField => '==' . $this->resultSetClient->quoteString($username),
+                    $this->usernameField => '=='.$this->resultSetClient->quoteString($username),
                     '-find' => null,
                 ]))->withIdentity($identity)
             );
         } catch (InvalidResponseException $e) {
             $errorCode = $e->getCode();
 
-            if (401 === $errorCode) {
+            if ($errorCode === 401) {
                 return Result::fromInvalidCredentials();
             }
 

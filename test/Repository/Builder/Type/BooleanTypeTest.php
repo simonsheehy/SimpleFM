@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository\Builder\Type;
 
@@ -11,7 +12,7 @@ use stdClass;
 
 final class BooleanTypeTest extends TestCase
 {
-    public static function fileMakerBooleanProvider() : array
+    public static function fileMakerBooleanProvider(): array
     {
         return [
             [null, false],

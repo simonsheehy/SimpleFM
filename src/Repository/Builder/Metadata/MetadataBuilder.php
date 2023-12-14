@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
@@ -17,7 +18,7 @@ use Soliant\SimpleFM\Repository\Builder\Type\TypeInterface;
 
 final class MetadataBuilder implements MetadataBuilderInterface
 {
-    const SCHEMA_PATH = __DIR__ . '/../../../../xsd/entity-metadata-5-1.xsd';
+    const SCHEMA_PATH = __DIR__.'/../../../../xsd/entity-metadata-5-1.xsd';
 
     /**
      * @var string
@@ -39,11 +40,11 @@ final class MetadataBuilder implements MetadataBuilderInterface
      */
     private $cache;
 
-    public function __construct(string $xmlFolder, array $additionalTypes = [], CacheItemPoolInterface $cache = null)
+    public function __construct(string $xmlFolder, array $additionalTypes = [], ?CacheItemPoolInterface $cache = null)
     {
-        if (!empty($additionalTypes)) {
-            Assertion::count(array_filter($additionalTypes, function ($type) : bool {
-                return !$type instanceof TypeInterface;
+        if (! empty($additionalTypes)) {
+            Assertion::count(array_filter($additionalTypes, function ($type): bool {
+                return ! $type instanceof TypeInterface;
             }), 0, sprintf('At least one element in array is not an instance of %s', TypeInterface::class));
         }
 
@@ -52,7 +53,7 @@ final class MetadataBuilder implements MetadataBuilderInterface
         $this->cache = $cache ?: new VoidCachePool();
     }
 
-    public function getMetadata(string $entityClassName) : Entity
+    public function getMetadata(string $entityClassName): Entity
     {
         if (array_key_exists($entityClassName, $this->metadata)) {
             return $this->metadata[$entityClassName];
@@ -61,12 +62,12 @@ final class MetadataBuilder implements MetadataBuilderInterface
         $cacheKey = sprintf('simplefm.metadata.%s', md5($entityClassName));
 
         if ($this->cache->hasItem($cacheKey)) {
-            return ($this->metadata[$entityClassName] = $this->cache->getItem($cacheKey)->get());
+            return $this->metadata[$entityClassName] = $this->cache->getItem($cacheKey)->get();
         }
 
         $xmlPath = sprintf('%s/%s', $this->xmlFolder, $this->buildFilename($entityClassName));
 
-        if (!file_exists($xmlPath)) {
+        if (! file_exists($xmlPath)) {
             throw InvalidFileException::fromNonExistentFile($xmlPath, $entityClassName);
         }
 
@@ -74,10 +75,10 @@ final class MetadataBuilder implements MetadataBuilderInterface
 
         $this->cache->save(new CacheItem($cacheKey, true, $entityMetadata));
 
-        return ($this->metadata[$entityClassName] = $entityMetadata);
+        return $this->metadata[$entityClassName] = $entityMetadata;
     }
 
-    private function createBuiltInTypes() : array
+    private function createBuiltInTypes(): array
     {
         return [
             'boolean' => new Type\BooleanType(),
@@ -93,7 +94,7 @@ final class MetadataBuilder implements MetadataBuilderInterface
         ];
     }
 
-    private function buildMetadata(string $xmlPath) : Entity
+    private function buildMetadata(string $xmlPath): Entity
     {
         $xml = $this->loadValidatedXml($xmlPath);
         $fields = [];
@@ -107,7 +108,7 @@ final class MetadataBuilder implements MetadataBuilderInterface
             foreach ($xml->field as $field) {
                 $type = (string) $field['type'];
 
-                if (!array_key_exists($type, $this->types)) {
+                if (! array_key_exists($type, $this->types)) {
                     throw InvalidTypeException::fromNonExistentType($type);
                 }
 
@@ -222,23 +223,24 @@ final class MetadataBuilder implements MetadataBuilderInterface
         );
     }
 
-    private function loadValidatedXml(string $xmlPath) : SimpleXMLElement
+    private function loadValidatedXml(string $xmlPath): SimpleXMLElement
     {
         $previousUseInternalErrors = libxml_use_internal_errors(true);
         $xml = new DOMDocument();
         $loadResult = $xml->load($xmlPath);
 
-        if (!$loadResult || !$xml->schemaValidate(self::SCHEMA_PATH)) {
+        if (! $loadResult || ! $xml->schemaValidate(self::SCHEMA_PATH)) {
             throw InvalidFileException::fromInvalidFile($xmlPath);
         }
 
         libxml_use_internal_errors($previousUseInternalErrors);
+
         return simplexml_import_dom($xml);
     }
 
-    private function buildFilename(string $className) : string
+    private function buildFilename(string $className): string
     {
-        return str_replace('\\', '.', $className) . '.xml';
+        return str_replace('\\', '.', $className).'.xml';
     }
 
     /**

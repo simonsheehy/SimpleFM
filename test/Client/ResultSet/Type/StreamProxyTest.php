@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Client\ResultSet\Type;
 
@@ -10,7 +11,7 @@ use Soliant\SimpleFM\Connection\ConnectionInterface;
 
 final class StreamProxyTest extends TestCase
 {
-    public function methodProvider() : array
+    public function methodProvider(): array
     {
         return [
             ['__toString', [], 'foo'],

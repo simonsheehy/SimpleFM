@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Client\Layout;
 
@@ -15,7 +16,7 @@ final class LayoutClientTest extends TestCase
     public function testCompleteXml()
     {
         $command = new Command('foo', []);
-        $xml = simplexml_load_file(__DIR__ . '/TestAssets/sample_fmpxmllayout.xml');
+        $xml = simplexml_load_file(__DIR__.'/TestAssets/sample_fmpxmllayout.xml');
         $connection = $this->prophesize(ConnectionInterface::class);
         $connection->execute($command, '/fmi/xml/FMPXMLLAYOUT.xml')->willReturn($xml);
         $client = new LayoutClient($connection->reveal());
@@ -47,7 +48,7 @@ final class LayoutClientTest extends TestCase
     public function testErrorXml()
     {
         $command = new Command('foo', []);
-        $xml = simplexml_load_file(__DIR__ . '/TestAssets/error_fmpxmllayout.xml');
+        $xml = simplexml_load_file(__DIR__.'/TestAssets/error_fmpxmllayout.xml');
         $connection = $this->prophesize(ConnectionInterface::class);
         $connection->execute($command, '/fmi/xml/FMPXMLLAYOUT.xml')->willReturn($xml);
         $client = new LayoutClient($connection->reveal());

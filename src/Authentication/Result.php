@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Authentication;
 
@@ -12,29 +13,30 @@ final class Result
      */
     private $identity;
 
-    private function __construct(Identity $identity = null)
+    private function __construct(?Identity $identity = null)
     {
         $this->identity = $identity;
     }
 
-    public static function fromIdentity($identity) : self
+    public static function fromIdentity($identity): self
     {
         return new self($identity);
     }
 
-    public static function fromInvalidCredentials() : self
+    public static function fromInvalidCredentials(): self
     {
         return new self();
     }
 
-    public function isSuccess() : bool
+    public function isSuccess(): bool
     {
-        return null !== $this->identity;
+        return $this->identity !== null;
     }
 
-    public function getIdentity() : Identity
+    public function getIdentity(): Identity
     {
         Assertion::notNull($this->identity);
+
         return $this->identity;
     }
 }

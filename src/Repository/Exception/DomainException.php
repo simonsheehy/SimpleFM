@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Repository\Exception;
 
@@ -7,7 +8,7 @@ use DomainException as PhpDomainException;
 
 final class DomainException extends PhpDomainException implements ExceptionInterface
 {
-    public static function fromUnmanagedEntity($entity) : self
+    public static function fromUnmanagedEntity($entity): self
     {
         return new self(sprintf('Entity with ID %s is not managed by the gateway', spl_object_hash($entity)));
     }

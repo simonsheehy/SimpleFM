@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\Layout;
 
@@ -21,17 +22,17 @@ final class Value
         $this->value = $value;
     }
 
-    public function getDisplay() : string
+    public function getDisplay(): string
     {
         return $this->display;
     }
 
-    public function getValue() : string
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->display;
     }

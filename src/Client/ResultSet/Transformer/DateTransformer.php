@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace Soliant\SimpleFM\Client\ResultSet\Transformer;
 
@@ -16,7 +17,7 @@ final class DateTransformer
 
     public function __invoke(string $value)
     {
-        if ('' === $value) {
+        if ($value === '') {
             return null;
         }
 
@@ -26,7 +27,7 @@ final class DateTransformer
             self::$utcTimeZone ?: (self::$utcTimeZone = new DateTimeZone('UTC'))
         );
 
-        if (false === $dateTime) {
+        if ($dateTime === false) {
             throw DateTimeException::fromDateTimeError($value, DateTimeImmutable::getLastErrors());
         }
 

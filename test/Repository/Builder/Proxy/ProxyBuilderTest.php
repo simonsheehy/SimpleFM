@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository\Builder;
 
@@ -20,7 +21,7 @@ final class ProxyBuilderTest extends TestCase
     {
         $realEntity = new class implements SimpleGetterInterface
         {
-            public function getFoo() : string
+            public function getFoo(): string
             {
                 return '';
             }
@@ -53,7 +54,7 @@ final class ProxyBuilderTest extends TestCase
         $proxy = $proxyBuilder->createProxy(SimpleGetterInterface::class, function () {
             return new class implements SimpleGetterInterface
             {
-                public function getFoo() : string
+                public function getFoo(): string
                 {
                     return 'foo';
                 }
@@ -88,7 +89,7 @@ final class ProxyBuilderTest extends TestCase
                     $this->foo = $foo;
                 }
 
-                public function getFoo() : string
+                public function getFoo(): string
                 {
                     return $this->foo;
                 }
@@ -112,7 +113,7 @@ final class ProxyBuilderTest extends TestCase
                     $this->foo = $foo;
                 }
 
-                public function getFoo() : array
+                public function getFoo(): array
                 {
                     return $this->foo;
                 }
@@ -130,7 +131,9 @@ final class ProxyBuilderTest extends TestCase
             return new class implements ComplexSetterInterface
             {
                 private $foo;
+
                 private $bar;
+
                 private $baz;
 
                 public function setFoo(string $foo, bool $bar, int ...$baz)
@@ -140,7 +143,7 @@ final class ProxyBuilderTest extends TestCase
                     $this->baz = $baz;
                 }
 
-                public function getFoo() : array
+                public function getFoo(): array
                 {
                     return [
                         $this->foo,

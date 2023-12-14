@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Repository\Builder\Metadata;
 
@@ -27,43 +28,43 @@ final class MetadataBuilderTest extends TestCase
 
     public function testNonExistentFile()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
 
         $this->expectException(InvalidFileException::class);
         $this->expectExceptionMessage(sprintf(
             '"%s" for entity "Non\Existent" does not exist',
-            __DIR__ . '/TestAssets/Non.Existent.xml'
+            __DIR__.'/TestAssets/Non.Existent.xml'
         ));
         $builder->getMetadata('Non\Existent');
     }
 
     public function testNonXmlFile()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
 
         $this->expectException(InvalidFileException::class);
         $this->expectExceptionMessage(sprintf(
             '"%s" is not valid',
-            __DIR__ . '/TestAssets/Non.Xml.xml'
+            __DIR__.'/TestAssets/Non.Xml.xml'
         ));
         $builder->getMetadata('Non\Xml');
     }
 
     public function testInvalidXmlFile()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
 
         $this->expectException(InvalidFileException::class);
         $this->expectExceptionMessage(sprintf(
             '"%s" is not valid',
-            __DIR__ . '/TestAssets/Invalid.Xml.xml'
+            __DIR__.'/TestAssets/Invalid.Xml.xml'
         ));
         $builder->getMetadata('Invalid\Xml');
     }
 
     public function testEmptyEntity()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('Empty');
         $this->assertSame('Empty', $metadata->getClassName());
         $this->assertSame('empty-layout', $metadata->getLayout());
@@ -72,7 +73,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testOptionalInterfaceName()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('InterfaceName');
         $this->assertTrue($metadata->hasInterfaceName());
         $this->assertSame('foo', $metadata->getInterfaceName());
@@ -80,7 +81,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testInternalMetadataCaching()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $this->assertSame($builder->getMetadata('Empty'), $builder->getMetadata('Empty'));
     }
 
@@ -98,7 +99,7 @@ final class MetadataBuilderTest extends TestCase
         )->shouldBeCalledTimes(1);
         $cache->save(Argument::any())->shouldNotBeCalled();
 
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets', [], $cache->reveal());
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets', [], $cache->reveal());
         $retrievedMetadata = $builder->getMetadata('Empty');
         $this->assertSame($cachedMetadata, $retrievedMetadata);
         $this->assertSame($retrievedMetadata, $builder->getMetadata('Empty'));
@@ -109,19 +110,18 @@ final class MetadataBuilderTest extends TestCase
         $cache = $this->prophesize(CacheItemPoolInterface::class);
         $cache->hasItem('simplefm.metadata.ce2c8aed9c2fa0cfbed56cbda4d8bf07')->willReturn(false);
         $cache->save(Argument::that(function (CacheItemInterface $cacheItem) {
-            return (
-                'simplefm.metadata.ce2c8aed9c2fa0cfbed56cbda4d8bf07' === $cacheItem->getKey()
-                && $cacheItem->get() instanceof Entity
-            );
+            return
+                $cacheItem->getKey() === 'simplefm.metadata.ce2c8aed9c2fa0cfbed56cbda4d8bf07'
+                && $cacheItem->get() instanceof Entity;
         }))->shouldBeCalledTimes(1);
 
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets', [], $cache->reveal());
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets', [], $cache->reveal());
         $builder->getMetadata('Empty');
     }
 
     public function testBuiltInTypes()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('BuiltInTypes');
         $fieldTypes = [];
 
@@ -145,7 +145,7 @@ final class MetadataBuilderTest extends TestCase
     {
         $customType = $this->prophesize(TypeInterface::class)->reveal();
 
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets', ['custom-type' => $customType]);
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets', ['custom-type' => $customType]);
         $metadata = $builder->getMetadata('CustomType');
 
         $this->assertSame($customType, $metadata->getFields()[0]->getType());
@@ -153,7 +153,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testNonExistentType()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
 
         $this->expectException(InvalidTypeException::class);
         $builder->getMetadata('CustomType');
@@ -161,7 +161,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testRepeatable()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('Repeatable');
 
         $this->assertFalse($metadata->getFields()[0]->isRepeatable());
@@ -171,7 +171,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testReadOnlyFields()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('ReadOnly');
 
         $this->assertFalse($metadata->getFields()[0]->isReadOnly());
@@ -181,7 +181,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testReadOnlyManyToOne()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('ReadOnly');
 
         $this->assertFalse($metadata->getManyToOne()[0]->isReadOnly());
@@ -191,7 +191,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testReadOnlyOneToOne()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('ReadOnly');
 
         $this->assertFalse($metadata->getOneToOne()[0]->isReadOnly());
@@ -201,7 +201,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testEagerHydrationOneToMany()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('EagerHydration');
 
         $this->assertFalse($metadata->getOneToOne()[0]->hasEagerHydration());
@@ -211,7 +211,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testEagerHydrationManyToOne()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('EagerHydration');
 
         $this->assertFalse($metadata->getManyToOne()[0]->hasEagerHydration());
@@ -221,7 +221,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testEagerHydrationOneToOneOwning()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('EagerHydration');
 
         $this->assertFalse($metadata->getOneToOne()[0]->hasEagerHydration());
@@ -231,7 +231,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testEagerHydrationOneToOneInverse()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('EagerHydration');
 
         $this->assertFalse($metadata->getOneToOne()[3]->hasEagerHydration());
@@ -241,7 +241,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testRecordId()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('RecordId');
 
         $this->assertSame('recordId', $metadata->getRecordId()->getPropertyName());
@@ -249,7 +249,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testEmbeddable()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('Embeddable');
         $embeddable = $metadata->getEmbeddables()[0];
 
@@ -260,7 +260,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testOneToMany()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('OneToMany');
         $relation = $metadata->getOneToMany()[0];
 
@@ -272,7 +272,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testManyToOne()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('ManyToOne');
         $relation = $metadata->getManyToOne()[0];
 
@@ -287,7 +287,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testManyToOneWithoutInterface()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
 
         $this->expectException(MissingInterfaceException::class);
         $this->expectExceptionMessage('entity "ManyToOneWithoutInterface" to entity "RelationTargetWithoutInterface"');
@@ -296,7 +296,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testOneToOneOwning()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('OneToOneOwning');
         $relation = $metadata->getOneToOne()[0];
 
@@ -312,7 +312,7 @@ final class MetadataBuilderTest extends TestCase
 
     public function testOneToOneInverse()
     {
-        $builder = new MetadataBuilder(__DIR__ . '/TestAssets');
+        $builder = new MetadataBuilder(__DIR__.'/TestAssets');
         $metadata = $builder->getMetadata('OneToOneInverse');
         $relation = $metadata->getOneToOne()[0];
 

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace SoliantTest\SimpleFM\Connection;
 
@@ -56,7 +57,7 @@ final class ConnectionTest extends TestCase
     public function testRequestWithoutCredentials()
     {
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame([
                     'Host' => ['example.com'],
                     'User-agent' => ['SimpleFM'],
@@ -76,7 +77,7 @@ final class ConnectionTest extends TestCase
     public function testRequestWithUriCredentials()
     {
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame(['Basic Zm9vJTpiYXIl'], $request->getHeader('Authorization'));
 
                 return new TextResponse('<xml/>');
@@ -94,7 +95,7 @@ final class ConnectionTest extends TestCase
         $identityHandler->decryptPassword(Argument::any())->willReturn('bat2');
 
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame(['Basic YmF6OmJhdDI='], $request->getHeader('Authorization'));
 
                 return new TextResponse('<xml/>');
@@ -113,7 +114,7 @@ final class ConnectionTest extends TestCase
         $identityHandler->decryptPassword(Argument::any())->willReturn('bat2');
 
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame(['Basic YmF6OmJhdDI='], $request->getHeader('Authorization'));
 
                 return new TextResponse('<xml/>');
@@ -158,7 +159,7 @@ final class ConnectionTest extends TestCase
     public function testGetAssetWithUriCredentials()
     {
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame(['Basic Zm9vJTpiYXIl'], $request->getHeader('Authorization'));
 
                 return new TextResponse('bar');
@@ -173,7 +174,7 @@ final class ConnectionTest extends TestCase
     public function testGetAssetWithQueryParameters()
     {
         $connection = new Connection(
-            $this->createAssertiveHttpClient(function (RequestInterface $request) : ResponseInterface {
+            $this->createAssertiveHttpClient(function (RequestInterface $request): ResponseInterface {
                 $this->assertSame('http://example.com/foo?bar=baz', (string) $request->getUri());
 
                 return new TextResponse('bar');
@@ -204,12 +205,12 @@ final class ConnectionTest extends TestCase
         $connection->execute(new Command('', []), '/grammar.xml');
     }
 
-    private function createAssertiveHttpClient(callable $assertion) : HttpClient
+    private function createAssertiveHttpClient(callable $assertion): HttpClient
     {
         $httpClient = $this->prophesize(HttpClient::class);
         $httpClient->sendRequest(Argument::any())->will(function (
             array $parameters
-        ) use ($assertion) : ResponseInterface {
+        ) use ($assertion): ResponseInterface {
             return $assertion($parameters[0]);
         });
 
