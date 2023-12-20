@@ -14,8 +14,8 @@ use Psr\Log\NullLogger;
 use SimpleXMLElement;
 use Soliant\SimpleFM\Authentication\IdentityHandlerInterface;
 use Soliant\SimpleFM\Connection\Exception\InvalidResponseException;
-use Zend\Diactoros\Request;
-use Zend\Diactoros\Stream;
+use Laminas\Diactoros\Request;
+use Laminas\Diactoros\Stream;
 
 final class Connection implements ConnectionInterface
 {

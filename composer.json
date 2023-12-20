@@ -16,15 +16,17 @@
         "php": "^8.0",
         "php-http/httplug": "^2.0",
         "litipk/php-bignumbers": "^0.8.4",
-        "beberlei/assert": "^2.6",
+        "beberlei/assert": "^3.3",
         "psr/log": "^3.0",
-        "psr/cache": "^1.0",
-        "cache/void-adapter": "^1.0",
-        "cache/adapter-common": "^1.0"
+        "psr/cache": "^3.0",
+        "laminas/laminas-diactoros": "^3.0",
+        "ext-simplexml": "*",
+        "laravel/laravel": "v10.2.10",
+        "ext-dom": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.5",
-        "squizlabs/php_codesniffer": "^2.6"
+        "phpunit/phpunit": "^10.0",
+        "squizlabs/php_codesniffer": "^3.8"
     },
     "autoload": {
         "psr-4": {
