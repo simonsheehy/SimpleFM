@@ -21,7 +21,7 @@
         "psr/cache": "^3.0",
         "laminas/laminas-diactoros": "^3.0",
         "ext-simplexml": "*",
-        "laravel/laravel": "v10.2.10",
+        "laravel/framework": "^10.10",
         "ext-dom": "*"
     },
     "require-dev": {
