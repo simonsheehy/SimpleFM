@@ -6,6 +6,8 @@ namespace Soliant\SimpleFM\Connection;
 
 use Assert\Assertion;
 use Http\Client\HttpClient;
+use Laminas\Diactoros\Request;
+use Laminas\Diactoros\Stream;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -14,8 +16,6 @@ use Psr\Log\NullLogger;
 use SimpleXMLElement;
 use Soliant\SimpleFM\Authentication\IdentityHandlerInterface;
 use Soliant\SimpleFM\Connection\Exception\InvalidResponseException;
-use Laminas\Diactoros\Request;
-use Laminas\Diactoros\Stream;
 
 final class Connection implements ConnectionInterface
 {

@@ -6,13 +6,13 @@ namespace Soliant\SimpleFM\Repository\Builder\Metadata;
 
 use Assert\Assertion;
 use DOMDocument;
+use Illuminate\Support\Facades\Cache;
 use SimpleXMLElement;
 use Soliant\SimpleFM\Repository\Builder\Metadata\Exception\InvalidFileException;
 use Soliant\SimpleFM\Repository\Builder\Metadata\Exception\InvalidTypeException;
 use Soliant\SimpleFM\Repository\Builder\Metadata\Exception\MissingInterfaceException;
 use Soliant\SimpleFM\Repository\Builder\Type;
 use Soliant\SimpleFM\Repository\Builder\Type\TypeInterface;
-use Illuminate\Support\Facades\Cache;
 
 final class MetadataBuilder implements MetadataBuilderInterface
 {
